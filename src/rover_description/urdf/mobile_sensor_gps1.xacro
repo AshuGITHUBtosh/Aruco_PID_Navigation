@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  
+  <!-- Define a link for GPS sensor -->
+  <link name="gps_link">
+    <!-- Define inertial properties (not critical for GPS) -->
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="0.1"/>
+      <inertia ixx="0.0001" ixy="0" ixz="0" iyy="0.0001" iyz="0" izz="0.0001"/>
+    </inertial>
+    <!-- Define visual properties (optional for GPS) -->
+    <visual>
+      <geometry>
+        <box size="0.05 0.05 0.05"/>
+      </geometry>
+      <material name="grey"/>
+    </visual>
+    <!-- Define collision properties (optional for GPS) -->
+    <collision>
+      <geometry>
+        <box size="0.05 0.05 0.05"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <!-- Define a joint to attach GPS link to the base link of your robot -->
+  <joint name="gps_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="gps_link"/>
+    <!-- Adjust position relative to base_link if needed -->
+    <origin xyz="0.1 0 0.2" rpy="0 0 0"/>
+  </joint>
+
+  <!-- Define Gazebo plugin for GPS sensor -->
+  <gazebo reference="gps_link">
+    <!-- Enable gravitational forces on the GPS link -->
+    <gravity>true</gravity>
+    <!-- Define the GPS sensor -->
+    <sensor name="gps_sensor" type="gps">
+      <!-- Keep the sensor always on -->
+      <always_on>true</always_on>
+      <!-- Update rate of the GPS sensor (Hz) -->
+      <update_rate>10</update_rate>
+      <!-- Enable visualization of GPS sensor in Gazebo -->
+      <visualize>true</visualize>
+      <!-- Topic name for publishing GPS data -->
+      <topic>gps/fix</topic>
+      <!-- Plugin details -->
+      <plugin filename="libgazebo_ros_gps.so" name="gps_sensor">
+        <!-- ROS topic to publish GPS data -->
+        <topicName>/gps/fix</topicName>
+        <!-- Link associated with the GPS sensor -->
+        <bodyName>gps_link</bodyName>
+        <!-- Update rate of the plugin -->
+        <updateRateHZ>10.0</updateRateHZ>
+        <!-- Gaussian noise level (optional) -->
+        <gaussianNoise>0.0</gaussianNoise>
+        <!-- XYZ offset (optional, usually 0 0 0) -->
+        <xyzOffset>0 0 0</xyzOffset>
+        <!-- RPY offset (optional, usually 0 0 0) -->
+        <rpyOffset>0 0 0</rpyOffset>
+        <!-- Frame name for the GPS sensor -->
+        <frameName>gps_link</frameName>
+        <!-- Initial orientation as reference (optional) -->
+        <initialOrientationAsReference>false</initialOrientationAsReference>
+      </plugin>
+      <!-- Pose of the GPS sensor in the robot model -->
+      <pose>0 0 0 0 0 0</pose>
+    </sensor>
+  </gazebo>
+</robot>

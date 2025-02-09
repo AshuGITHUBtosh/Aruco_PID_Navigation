@@ -1,0 +1,411 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<robot name="asbathama" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+	<xacro:include filename="/home/go4av05/build_ws/src/rover_description/asbathama_urdf/asbathama_gazebo.xml"/>
+
+
+	<xacro:property name="base_length" value="0.5" />
+	<xacro:property name="base_width" value="0.5" />
+	<xacro:property name="base_height" value="0.1" />
+	<xacro:property name="mass_base" value="30.0" />
+
+
+	<!-- all materials here -->
+
+	<material name="green">
+		<color rgba="0.0 1.0 0.0 1.0"/>
+	</material>
+	<material name="blue">
+		<color rgba="0.0 0.0 1.0 1.0"/>
+	</material>
+	<material name="red">
+		<color rgba="1.0 0.0 0.0 1.0"/>
+	</material>
+	<material name="black">
+		<color rgba="0 0.0 0 1"/>
+	</material>
+	<material name="new">
+		<color rgba="0.5 0.5 0 1"/>
+	</material>
+
+<!-- inertial tags here -->
+
+	<xacro:macro name="box_inertia" params="m l w h xyz rpy">
+    	<inertial>
+        	<origin  xyz="${xyz}" rpy="${rpy}" />
+        	<mass value="${m}"/>
+        	<inertia ixx="${(float(m)/12)*(float(h)*float(h) + float(l)*float(l))}" ixy="0.0" ixz="0.0" 
+                 iyy="${(float(m)/12)*(float(w)*float(w) + float(l)*float(l))}" iyz="0.0" 
+                 izz="${(float(m)/12)*(float(w)*float(w) + float(h)*float(h))}"/>
+    	</inertial>
+	</xacro:macro>
+
+	<xacro:macro name="suspension_inertia" params="m r xyz rpy">
+		<inertial>
+    		<inertia ixx="${(1/4)*float(m)*float(r)*float(r)}" ixy="0.0" ixz="0.0" 
+             iyy="${(1/4)*float(m)*float(r)*float(r)}" iyz="0.0" 
+             izz="${(1/2)*float(m)*float(r)*float(r)}"/>
+    		<mass value="${m}"/>
+			<origin xyz="${xyz}" rpy="${rpy}"/>
+		</inertial>
+	</xacro:macro>
+
+	<xacro:macro name="leg_inertia" params="m l xyz rpy">
+		<inertial>
+    		<inertia ixx="${(1/3)*float(m)*float(l)*float(l)}" ixy="0.0" ixz="0.0"
+                     iyy="0.0" iyz="0.0"
+                     izz="${(1/3)*float(m)*float(l)*float(l)}"/>
+    		<mass value="${m}"/>
+			<origin xyz="${xyz}" rpy="${rpy}"/>
+		</inertial>
+	</xacro:macro>
+
+    <xacro:macro name="wheel_inertia" params="m r h xyz rpy">
+        <inertial>
+            <origin xyz="${xyz}" rpy="${rpy}" />
+            <mass value="${m}" />
+            <inertia ixx="${(float(m)/12) * (3*float(r)*float(r) + float(h)*float(h))}" ixy="0" ixz="0"
+                     iyy="${(float(m)/12) * (3*float(r)*float(r) + float(h)*float(h))}" iyz="0"
+                     izz="${(float(m)/2) * (float(r)*float(r))}" />
+        </inertial>
+    </xacro:macro>	
+
+
+	<!-- all links here -->
+
+	<link name="base_footprint"/>
+
+	<link name="base_link">
+    <visual>
+        <geometry>
+            <box size="${base_length} ${base_width} ${base_height}"></box>
+        </geometry>
+
+        <origin xyz="0.0 0.0 0.05" rpy="0.0 0.0 0.0"/>
+
+        <material name="red"/>
+        
+    </visual>
+	<collision>
+		<geometry>
+            <box size="${base_length} ${base_width} ${base_height}"></box>
+        </geometry>
+
+        <origin xyz="0.0 0.0 0.05" rpy="0.0 0.0 0.0"/>
+	</collision>
+    <xacro:box_inertia m="${mass_base}" l="${base_height}" w="${base_width}" h="${base_length}"
+                       xyz="0.0 0.0 0.0" rpy="0 0 0" />
+	</link>
+
+	<link name="antenna">
+		<visual>
+			<geometry>
+				<cylinder radius="0.05" length="0.5"/>
+			</geometry>
+			<origin xyz="0.0 0.0 0.25" rpy="0.0 0.0 0.0"/>
+			<material name="new"/>
+			
+		</visual>
+		<collision>
+			<geometry>
+				<cylinder radius="0.05" length="0.5"/>
+			</geometry>
+			<origin xyz="0.0 0.0 0.25" rpy="0.0 0.0 0.0"/>
+		</collision>
+	</link>
+
+	<link name="left_suspension_link">
+		<visual>
+			<geometry>
+				<cylinder radius="0.05" length="0.05"/>
+			</geometry>
+
+			<origin xyz="0.0 0.0 0.0" rpy="${pi/2} 0.0 0.0"/>
+
+			<material name="green"/>
+
+		</visual>
+		<collision>
+			<geometry>
+				<cylinder radius="0.05" length="0.05"/>
+			</geometry>
+
+			<origin xyz="0.0 0.0 0.0" rpy="${pi/2} 0.0 0.0"/>
+		</collision>
+		<xacro:suspension_inertia m="3" r="0.05" xyz="0.0 0.0 0.0" rpy="${pi/2} 0.0 0.0"/>
+
+	</link>
+
+	<link name="right_suspension_link">
+		<visual>
+			<geometry>
+				<cylinder radius="0.05" length="0.05"/>
+			</geometry>
+
+			<origin xyz="0.0 0.0 0.0" rpy="${pi/2} 0.0 0.0"/>
+
+			<material name="green"/>
+
+		</visual>
+		<collision>
+			<geometry>
+				<cylinder radius="0.05" length="0.05"/>
+			</geometry>
+
+			<origin xyz="0.0 0.0 0.0" rpy="${pi/2} 0.0 0.0"/>
+		</collision>
+		<xacro:suspension_inertia m="3" r="0.05" xyz="0 0 0" rpy="${pi/2} 0.0 0.0"/>
+
+	</link>
+
+	<link name="fl_leg">
+		<visual>
+			<geometry>
+				<box size="0.3 0.05 0.05"></box>
+			</geometry>
+
+			<origin xyz="0.15 -0.025 0" rpy="0.0 0.0 0.0"/>
+
+			<material name="blue"/>
+			
+		</visual>
+		<collision>
+			<geometry>
+				<box size="0.3 0.05 0.05"></box>
+			</geometry>
+
+			<origin xyz="0.15 -0.025 0" rpy="0.0 0.0 0.0"/>
+		</collision>
+		<xacro:leg_inertia m="5" l="0.3" xyz="0.15 -0.025 0" rpy="0.0 0.0 0.0"/>
+		
+	</link>
+	<link name="fl_wheel">
+		<visual>
+			<geometry>
+				<cylinder radius="0.1" length="0.1"/>
+			</geometry>
+
+			<origin xyz="0.0 -0.1 0" rpy="${pi/2} 0.0 0.0"/>
+
+			<material name="black"/>
+
+		</visual>
+		<collision>
+			<geometry>
+				<cylinder radius="0.1" length="0.1"/>
+			</geometry>
+
+			<origin xyz="0.0 -0.1 0" rpy="${pi/2} 0.0 0.0"/>
+		</collision>
+		<xacro:wheel_inertia m="5" r="0.1" h="0.1" xyz="0 0 0" rpy="${pi/2} 0.0 0.0"/> <!-- y val-->
+	</link>
+
+
+	<link name="fr_leg">
+		<visual>
+			<geometry>
+				<box size="0.3 0.05 0.05"></box>
+			</geometry>
+
+			<origin xyz="0.15 0.025 0" rpy="0.0 0.0 0.0"/>
+
+			<material name="blue"/>
+			
+		</visual>
+		<collision>
+			<geometry>
+				<box size="0.3 0.05 0.05"></box>
+			</geometry>
+
+			<origin xyz="0.15 0.025 0" rpy="0.0 0.0 0.0"/>
+		</collision>
+		<xacro:leg_inertia m="5" l="0.3" xyz="0.15 0.025 0" rpy="0.0 0.0 0.0"/>
+		
+	</link>
+	<link name="fr_wheel">
+		<visual>
+			<geometry>
+				<cylinder radius="0.1" length="0.1"/>
+			</geometry>
+
+			<origin xyz="0.0 0.1 0" rpy="${pi/2} 0.0 0.0"/>
+
+			<material name="black"/>
+
+		</visual>
+		<collision>
+			<geometry>
+				<cylinder radius="0.1" length="0.1"/>
+			</geometry>
+
+			<origin xyz="0.0 0.1 0" rpy="${pi/2} 0.0 0.0"/>
+		</collision>
+		<xacro:wheel_inertia m="5" r="0.1" h="0.1" xyz="0 0 0" rpy="${pi/2} 0.0 0.0"/>
+	</link>
+
+
+	<link name="bl_leg">
+		<visual>
+			<geometry>
+				<box size="0.3 0.05 0.05"></box>
+			</geometry>
+
+			<origin xyz="-0.15 -0.025 0" rpy="0 0 0.0"/>
+
+			<material name="blue"/>
+			
+		</visual>
+		<collision>
+			<geometry>
+				<box size="0.3 0.05 0.05"></box>
+			</geometry>
+
+			<origin xyz="-0.15 -0.025 0" rpy="0 0 0.0"/>
+		</collision>
+		<xacro:leg_inertia m="5" l="0.3" xyz="-0.15 -0.025 0" rpy="0 0 0.0"/>
+		
+	</link>
+	<link name="bl_wheel">
+		<visual>
+			<geometry>
+				<cylinder radius="0.1" length="0.1"/>
+			</geometry>
+
+			<origin xyz="0.0 -0.1 0" rpy="${pi/2} 0.0 0.0"/>
+
+			<material name="black"/>
+
+		</visual>
+		<collision>
+			<geometry>
+				<cylinder radius="0.1" length="0.1"/>
+			</geometry>
+
+			<origin xyz="0.0 -0.1 0" rpy="${pi/2} 0.0 0.0"/>
+		</collision>
+		<xacro:wheel_inertia m="5" r="0.1" h="0.1" xyz="0 0 0" rpy="${pi/2} 0.0 0.0"/>
+
+	</link>
+
+
+	<link name="br_leg">
+		<visual>
+			<geometry>
+				<box size="0.3 0.05 0.05"></box>
+			</geometry>
+
+			<origin xyz="-0.15 0.025 0" rpy="0.0 0.0 0.0"/>
+
+			<material name="blue"/>
+			
+		</visual>
+		<collision>
+			<geometry>
+				<box size="0.3 0.05 0.05"></box>
+			</geometry>
+
+			<origin xyz="-0.15 0.025 0" rpy="0.0 0.0 0.0"/>
+		</collision>
+		<xacro:leg_inertia m="5" l="0.3" xyz="-0.15 0.025 0" rpy="0.0 0.0 0.0"/>
+		
+	</link>
+	<link name="br_wheel">
+		<visual>
+			<geometry>
+				<cylinder radius="0.1" length="0.1"/>
+			</geometry>
+
+			<origin xyz="0.0 0.1 0" rpy="${pi/2} 0.0 0.0"/>
+
+			<material name="black"/>
+
+		</visual>
+		<collision>
+			<geometry>
+				<cylinder radius="0.1" length="0.1"/>
+			</geometry>
+
+			<origin xyz="0.0 0.1 0" rpy="${pi/2} 0.0 0.0"/>
+		</collision>
+		<xacro:wheel_inertia m="5" r="0.1" h="0.1" xyz="0 0 0" rpy="${pi/2} 0.0 0.0"/>
+
+	</link>
+
+
+
+	<!-- all joints here -->
+
+	<joint name="base_footprint" type="fixed">
+     <parent link="base_footprint"/>
+     <child link="base_link"/>
+   </joint>
+
+	<joint name="antenna_joint" type="fixed">
+		<parent link="base_link"/>
+		<child link="antenna"/>
+		<origin xyz="-0.3 0.3 0.0" rpy="0.0 0.0 0.0"/>		
+	</joint>
+
+	<joint name="left_suspension" type="fixed">
+		<parent link="base_link"/>
+		<child link="left_suspension_link"/>
+		<origin xyz="0 ${-base_width / 2.0} 0.0" rpy="0.0 0.0 0.0"/>
+	</joint>
+	<joint name="right_suspension" type="fixed">
+		<parent link="base_link"/>
+		<child link="right_suspension_link"/>
+		<origin xyz="0 ${base_width / 2.0} 0.0" rpy="0.0 0.0 0.0"/>
+	</joint>
+	<joint name="left_suspension_f_leg" type="fixed">
+		<parent link="left_suspension_link"/>
+		<child link="fl_leg"/>
+		<origin xyz="0 0 0" rpy="0 0.523 0"/>		
+	</joint>
+	<joint name="left_suspension_b_leg" type="fixed">
+		<parent link="left_suspension_link"/>
+		<child link= "bl_leg"/>
+		<origin xyz="0 0 0" rpy="0.0 -0.523 0.0"/>		
+	</joint>
+	<joint name="right_suspension_f_leg" type="fixed">
+		<parent link="right_suspension_link"/>
+		<child link="fr_leg"/>
+		<origin xyz="0 0 0" rpy="0.0 0.523 0.0"/>		
+	</joint>
+	<joint name="right_suspension_b_leg" type="fixed">
+		<parent link="right_suspension_link"/>
+		<child link= "br_leg"/>
+		<origin xyz="0 0 0" rpy="0.0 -0.523 0.0"/>		
+	</joint>
+
+	<joint name="fl_wheel_joint" type="continuous">
+		<parent link="fl_leg"/>
+		<child link="fl_wheel"/>
+		<origin xyz="0.3 0.0 0.0" rpy="0.0 0.0 0.0"/>		
+		<axis xyz="0.0 1.0 0.0"/>
+		
+	</joint>
+	<joint name="fr_wheel_joint" type="continuous">
+		<parent link="fr_leg"/>
+		<child link="fr_wheel"/>
+		<origin xyz="0.3 0.0 0.0" rpy="0.0 0.0 0.0"/>
+		<axis xyz="0.0 1.0 0.0"/>
+				
+	</joint>
+	<joint name="bl_wheel_joint" type="continuous">
+		<parent link="bl_leg"/>
+		<child link="bl_wheel"/>
+		<origin xyz="-0.3 0.0 0.0" rpy="0.0 0.0 0.0"/>	
+		<axis xyz="0.0 1.0 0.0"/>
+			
+	</joint>
+	<joint name="br_wheel_joint" type="continuous">
+		<parent link="br_leg"/>
+		<child link="br_wheel"/>
+		<origin xyz="-0.3 0.0 0.0" rpy="0.0 0.0 0.0"/>	
+		<axis xyz="0.0 1.0 0.0"/>
+			
+	</joint>
+
+
+
+</robot>

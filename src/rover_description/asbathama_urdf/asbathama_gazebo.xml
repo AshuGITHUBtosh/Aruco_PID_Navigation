@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<robot name="asbathama"
+	xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+	<gazebo reference="base_link">
+		<material>Gazebo/Red</material>
+	</gazebo>
+
+	<gazebo reference="antenna">
+		<material>Gazebo/Yellow</material>
+	</gazebo>
+
+	<gazebo reference="left_suspension_link">
+		<material>Gazebo/Green</material>
+	</gazebo>
+
+	<gazebo reference="right_suspension_link">
+		<material>Gazebo/Green</material>
+	</gazebo>
+
+	<gazebo reference="fl_leg">
+		<material>Gazebo/Blue</material>
+	</gazebo>
+
+	<gazebo reference="fr_leg">
+		<material>Gazebo/Blue</material>
+	</gazebo>
+
+	<gazebo reference="bl_leg">
+		<material>Gazebo/Blue</material>
+	</gazebo>
+
+	<gazebo reference="br_leg">
+		<material>Gazebo/Blue</material>
+	</gazebo>
+
+	<gazebo reference="fl_wheel">
+		<material>Gazebo/Black</material>
+	</gazebo>
+
+	<gazebo reference="fr_wheel">
+		<material>Gazebo/Black</material>
+	</gazebo>
+
+	<gazebo reference="bl_wheel">
+		<material>Gazebo/Black</material>
+	</gazebo>
+
+	<gazebo reference="br_wheel">
+		<material>Gazebo/Black</material>
+	</gazebo>
+
+
+	<gazebo>
+		<plugin name="skid_steer_drive_controller" filename="/home/go4av05/Desktop/libgazebo_ros_skid_steer_drive.so">
+			<updateRate>5.0</updateRate>
+			<robotNamespace>/</robotNamespace>
+			<leftFrontJoint>left_suspension_f_leg</leftFrontJoint>
+			<rightFrontJoint>right_suspension_f_leg</rightFrontJoint>
+			<leftRearJoint>left_suspension_b_leg</leftRearJoint>
+			<rightRearJoint>right_suspension_b_leg</rightRearJoint>
+			<wheelSeparation>0.7</wheelSeparation>
+			<wheelDiameter>0.2</wheelDiameter>
+			<robotBaseFrame>base_link</robotBaseFrame>
+			<torque>10</torque>
+			<robotBaseFrame>robot_footprint</robotBaseFrame>
+			<torque>200</torque>
+			<MaxForce>5.0</MaxForce>
+			<commandTopic>cmd_vel</commandTopic>
+			<odometryTopic>odom</odometryTopic>
+			<odometryFrame>odom</odometryFrame>
+			<broadcastTF>true</broadcastTF>
+			<covariance_x>0.001</covariance_x>			<!-- 0.0001 -->
+			<covariance_y>0.001</covariance_y>			<!-- 0.0001 -->
+			<covariance_yaw>0.01</covariance_yaw>			<!-- 0.01 -->
+		</plugin>
+	</gazebo>
+</robot>
