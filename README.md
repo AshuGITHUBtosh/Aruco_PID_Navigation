@@ -3,4 +3,5 @@ This project implements an autonomous navigation system using ROS2 and OpenCV, e
 # Tools used
  - ROS2 Humble
  - OpenCV
+ - PID control
  
