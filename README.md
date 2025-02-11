@@ -6,4 +6,7 @@ This project implements an autonomous navigation system using ROS2 and OpenCV, e
  - PID control
 
  ## Execution
+ - ``` colcon build ```
+ - ``` source install/setup.bash```
+ - ``` ros2 launch asbu_gooo asbathama_follow.launch.py```
  
