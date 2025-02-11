@@ -14,15 +14,15 @@ def generate_launch_description():
             period=15.0,
             actions=[
                 ExecuteProcess(
-                    cmd=['python3', '-u', '/home/go4av05/build_ws/src/asbu_eyes/asbu_eyes/open_eyes.py'],
+                    cmd=['python3', '-u', '/home/ashutosh/Desktop/build_ws-main/src/asbu_eyes/asbu_eyes/open_eyes.py'],
                     output='screen'
                 ),
                 ExecuteProcess(
-                    cmd=['python3', '-u', '/home/go4av05/build_ws/src/asbu_eyes/asbu_eyes/receive_frame.py'],
+                    cmd=['python3', '-u', '/home/ashutosh/Desktop/build_ws-main/src/asbu_eyes/asbu_eyes/receive_frame.py'],
                     output='screen'
                 ),
                 ExecuteProcess(
-                    cmd=['python3', '-u', '/home/go4av05/build_ws/src/asbu_eyes/asbu_eyes/pid.py'],
+                    cmd=['python3', '-u', '/home/ashutosh/Desktop/build_ws-main/src/asbu_eyes/asbu_eyes/pid.py'],
                     output='screen'
                 ),
             ]

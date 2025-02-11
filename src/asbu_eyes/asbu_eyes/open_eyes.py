@@ -8,7 +8,7 @@ class WebcamPublisher(Node):
 
     def __init__(self):
         super().__init__('webcam_publisher')
-        self.cap = cv2.VideoCapture(2)  # Assuming webcam index is 2
+        self.cap = cv2.VideoCapture(0)  # Assuming webcam index is 2
 
         # Set the webcam resolution to 1280x800
         self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
