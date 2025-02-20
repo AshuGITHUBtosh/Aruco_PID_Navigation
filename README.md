@@ -4,6 +4,9 @@ This project implements an autonomous navigation system using ROS2 and OpenCV, e
  - ROS2 Humble
  - OpenCV
  - PID control
+ - Python
+
+## Dependencies & Installation
 
  ## Execution
  - ``` colcon build ```
