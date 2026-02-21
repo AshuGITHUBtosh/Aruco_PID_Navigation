@@ -2,7 +2,10 @@
 This project implements an autonomous navigation system using ROS2 and OpenCV, enabling real-time tracking of ArUco markers for precise navigation. It incorporates PID control to ensure accurate alignment of the robot with detected markers.
 
 ## Demo
-https://drive.google.com/file/d/1q43VaxNxeg7UbM3cYEF7neTJJTPr_PuT/view?usp=sharing
+▶️ Watch demo video: https://drive.google.com/file/d/1q43VaxNxeg7UbM3cYEF7neTJJTPr_PuT/view?usp=sharing
+
+The video demonstrates real-time ArUco detection and PID-based robot
+alignment in a ROS 2 environment.
 
 ## Tools used
  - ROS2 Humble
